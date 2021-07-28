@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-img = cv2.imread("assets.png")
+img = cv2.imread("images/assets.png")
 
 width , height = 110, 100
 
