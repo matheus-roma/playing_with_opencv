@@ -9,7 +9,7 @@ def getContours(canny, img):
         doc_perimeter = cv2.arcLength(i, True)
         if doc_perimeter > 500:
             cv2.drawContours(draw, i, -1, (0,0,255),2)
-            pts = cv2.approxPolyDP(i, 0.1*doc_perimeter, True)
+            pts = cv2.approxPolyDP(i, 0.05*doc_perimeter, True)
             #print(pts)
             #if len(pts) == 4:
                 #print("The 4 points were detected")
@@ -27,7 +27,7 @@ def adjustImage(img, pts):
     pts2 = np.float32([ [0,0], [width, 0], [0,height], [width, height]])
     #print(pts.shape, pts2.shape)
 
-    matrix = cv2.getPerspectiveTransform(pts,pts2, solveMethod = cv2.DECOMP_LU)
+    matrix = cv2.getPerspectiveTransform(pts,pts2)
 
     img_output = cv2.warpPerspective(img, matrix, (width, height))
     
