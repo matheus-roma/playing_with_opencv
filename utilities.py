@@ -1,5 +1,23 @@
 import cv2
 import numpy as np
+from numpy.core.fromnumeric import size
+
+
+def scaleAdjust(img, scale_percent):
+        
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    
+    img_resised = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
+    
+    img_Gray = cv2.cvtColor(img_resised, cv2.COLOR_BGR2GRAY)
+    img_Blur = cv2.GaussianBlur(img_Gray, (25,25), 1)
+    img_Canny = cv2.Canny(img_Blur, 100, 100)  
+
+    return img_Canny, img_resised
+
+
 
 def getContours(canny, img):
     draw = img.copy()
@@ -15,7 +33,7 @@ def getContours(canny, img):
 
 def adjustImage(img, pts):
     x_0, y_0, width, height = cv2.boundingRect(pts)
-
+    
     myPoints = pts.reshape((4,2))
     myPointsNew = np.zeros((4,1,2),np.float32)
     add = myPoints.sum(1)
@@ -25,7 +43,6 @@ def adjustImage(img, pts):
     diff = np.diff(myPoints,axis=1)
     myPointsNew[1]= myPoints[np.argmin(diff)]
     myPointsNew[2] = myPoints[np.argmax(diff)]
-    print("NewPoints",myPointsNew)
  
     pts2 = np.float32([ [0,0], [width, 0], [0,height], [width, height]])
     matrix = cv2.getPerspectiveTransform(myPointsNew,pts2)
