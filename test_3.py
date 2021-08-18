@@ -1,26 +1,29 @@
 import cv2
 import utilities as util
-import numpy as np
 
-filename = "images_doc_t2/04.jpeg"
-img = cv2.imread("images_doc/04.jpeg")
+#filename = "images_doc_t2/04.jpeg"
+img = cv2.imread("images_doc/07.jpeg")
 
-#img = cv2.resize(img, (1120, 630))
+scale_percent = 60 # percent of original size
+width = int(img.shape[1] * scale_percent / 100)
+height = int(img.shape[0] * scale_percent / 100)
+dim = (width, height)
 
-ret,thresh = cv2.threshold(img,127,255,0)
-im2,contours,hierarchy = cv2.findContours(thresh, 1, 2)
-cnt = contours[0]
-M = cv2.moments(cnt)
-rect = cv2.minAreaRect(cnt)
-box = cv2.boxPoints(rect)
-box = np.int0(box)
-cv2.drawContours(img,[box],0,(0,0,255),2)
-
-print(box)
+img = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
 
 
-#cv2.imshow("Output", output)
-#cv2.imshow("Contours detected",draw)
-#cv2.imshow("Canny",img_Canny)
+img_Gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+img_Blur = cv2.GaussianBlur(img_Gray, (25,25), 1)
+img_Canny = cv2.Canny(img_Blur, 100, 100)
 
+
+draw, pts1 = util.getContours(img_Canny, img) 
+
+output = util.adjustImage(img, pts1)
+
+cv2.imshow("Output", output)
+cv2.imshow("Contours detected",draw)
+cv2.imshow("Canny",img_Canny)
+
+#cv2.imwrite(filename, output)
 cv2.waitKey(0)
