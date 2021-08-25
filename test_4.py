@@ -6,6 +6,7 @@ img = cv2.imread("images_doc/06.jpeg")
 
 img_Canny, img_resised = util.scaleAdjust(img, 100)
 
+
 draw, pts1 = util.getContours(img_Canny, img_resised) 
 
 output = util.adjustImage(img_resised, pts1)
