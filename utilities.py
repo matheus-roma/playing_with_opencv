@@ -1,6 +1,8 @@
 import cv2
+import glob
 import numpy as np
 from numpy.core.fromnumeric import size
+
 
 
 def scaleAdjust(img, scale_percent):
@@ -49,3 +51,26 @@ def adjustImage(img, pts):
 
     img_output = cv2.warpPerspective(img, matrix, (width, height))
     return img_output
+
+def blendImages():    
+    # Import all image files with the .jpg extension
+    files = glob.glob ("*.jpg")
+    image_data = []
+    for my_file in files:
+        this_image = cv2.imread(my_file, 1)
+        image_data.append(this_image)
+    
+    # Calculate blended image
+    dst = image_data[0]
+    for i in range(len(image_data)):
+        if i == 0:
+            pass
+        else:
+            alpha = 1.0/(i + 1)
+            beta = 1.0 - alpha
+            dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0.0)
+    
+    # Save blended image
+    #cv2.imwrite('weather_forecast.png', dst)
+    #cv2.imshow("Output", dst)
+    return dst

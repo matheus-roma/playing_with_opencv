@@ -1,11 +1,10 @@
 import cv2
 import utilities as util
 
-#filename = "images_doc_t3/06.jpeg"
-img = cv2.imread("images_doc/06.jpeg")
+filename = "images_doc_t4/06.jpg"
+img = cv2.imread("images_t4/06.jpg")
 
-img_Canny, img_resised = util.scaleAdjust(img, 100)
-
+img_Canny, img_resised = util.scaleAdjust(img, 90)
 
 draw, pts1 = util.getContours(img_Canny, img_resised) 
 
@@ -16,4 +15,7 @@ cv2.imshow("Output", output)
 #cv2.imshow("Canny",img_Canny)
 
 #cv2.imwrite(filename, output)
+
+#dst = util.blendImages()
+#cv2.imshow("Output 2", dst)
 cv2.waitKey(0)
