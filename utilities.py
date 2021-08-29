@@ -7,7 +7,6 @@ from numpy.core.fromnumeric import size
 
 def scaleAdjust(img, scale_percent):
     
-
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
     dim = (width, height)
@@ -54,14 +53,17 @@ def adjustImage(img, pts):
 
 def blendImages():    
     # Import all image files with the .jpg extension
-    files = glob.glob ("*.jpg")
+    #files = glob.glob ("images_doc_t4/*.jpeg")
+    files = glob.glob ("jpg/*.jpg")
     image_data = []
     for my_file in files:
         this_image = cv2.imread(my_file, 1)
         image_data.append(this_image)
-    
+
+
     # Calculate blended image
     dst = image_data[0]
+    print(type(dst))
     for i in range(len(image_data)):
         if i == 0:
             pass
@@ -71,6 +73,6 @@ def blendImages():
             dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0.0)
     
     # Save blended image
-    #cv2.imwrite('weather_forecast.png', dst)
+    cv2.imwrite('weather_forecast.png', dst)
     #cv2.imshow("Output", dst)
     return dst
