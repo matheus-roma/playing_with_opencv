@@ -6,7 +6,8 @@ from numpy.core.fromnumeric import size
 
 
 def scaleAdjust(img, scale_percent):
-        
+    
+
     width = int(img.shape[1] * scale_percent / 100)
     height = int(img.shape[0] * scale_percent / 100)
     dim = (width, height)
@@ -14,12 +15,11 @@ def scaleAdjust(img, scale_percent):
     img_resised = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
     
     img_Gray = cv2.cvtColor(img_resised, cv2.COLOR_BGR2GRAY)
-    img_Blur = cv2.GaussianBlur(img_Gray, (25,25), 1)
-    img_Canny = cv2.Canny(img_Blur, 100, 100)  
+    img_Blur = cv2.GaussianBlur(img_Gray, (5,5), 1)
+    img_Canny = cv2.Canny(img_Blur, 100 , 100)
+
 
     return img_Canny, img_resised
-
-
 
 def getContours(canny, img):
     draw = img.copy()
