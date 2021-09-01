@@ -28,7 +28,7 @@ def getContours(canny, img):
         doc_perimeter = cv2.arcLength(i, True)
         if doc_perimeter > 500:
             cv2.drawContours(draw, i, -1, (0,0,255),2)
-            pts = cv2.approxPolyDP(i, 0.05*doc_perimeter, True)  
+            pts = cv2.approxPolyDP(i, 0.02*doc_perimeter, True)  
     return draw, pts
 
 
@@ -54,23 +54,28 @@ def adjustImage(img, pts):
 def blendImages():    
     # Import all image files with the .jpg extension
     #files = glob.glob ("images_doc_t4/*.jpeg")
-    files = glob.glob ("jpg/*.jpg")
+    files = glob.glob ("images_t5/*.jpg")
     image_data = []
     for my_file in files:
         this_image = cv2.imread(my_file, 1)
         image_data.append(this_image)
-
+    
+    
 
     # Calculate blended image
     dst = image_data[0]
-    print(type(dst))
     for i in range(len(image_data)):
         if i == 0:
             pass
         else:
             alpha = 1.0/(i + 1)
             beta = 1.0 - alpha
-            dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0.0)
+            image_data[i] = cv2.resize(image_data[i], (dst.shape[1],dst.shape[0]))
+            dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0)
+            #dst = np.uint8(alpha*(image_data[i])+beta*(dst))
+
+            
+
     
     # Save blended image
     cv2.imwrite('weather_forecast.png', dst)
