@@ -31,7 +31,6 @@ def getContours(canny, img):
             pts = cv2.approxPolyDP(i, 0.02*doc_perimeter, True)  
     return draw, pts
 
-
 def adjustImage(img, pts):
     x_0, y_0, width, height = cv2.boundingRect(pts)
     
@@ -60,8 +59,6 @@ def blendImages():
         this_image = cv2.imread(my_file, 1)
         image_data.append(this_image)
     
-    
-
     # Calculate blended image
     dst = image_data[0]
     for i in range(len(image_data)):
@@ -73,11 +70,8 @@ def blendImages():
             image_data[i] = cv2.resize(image_data[i], (dst.shape[1],dst.shape[0]))
             dst = cv2.addWeighted(image_data[i], alpha, dst, beta, 0)
             #dst = np.uint8(alpha*(image_data[i])+beta*(dst))
-
-            
-
     
     # Save blended image
-    cv2.imwrite('weather_forecast.png', dst)
+    #cv2.imwrite('weather_forecast.png', dst)
     #cv2.imshow("Output", dst)
     return dst

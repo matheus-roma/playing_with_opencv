@@ -22,7 +22,7 @@ def WebCam():
             i = 0
         
         if flag_row == True:
-            cv2.imwrite("images/" + str(i) + ".jpg", frame)
+            cv2.imwrite("images_t6/" + str(i) + ".jpg", frame)
             i+=1
             if i == MAX_IMAGE_NUMBER:
                 flag_row = False
@@ -34,7 +34,6 @@ def WebCam():
     cv2.destroyAllWindows()
 
 
-#menu
 menu = input("1: Webcam: \n2: ")
 if menu == '1':
     WebCam()
